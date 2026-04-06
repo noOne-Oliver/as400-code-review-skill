@@ -1,29 +1,55 @@
 # AS400 Code Review Skill
 
-Automated quality checks for AS400/RPG code.
+Structured review skill for IBM i / AS400 RPG and RPGLE code.
 
 ## Overview
 
-This skill provides comprehensive code review checklists for AS400/RPG applications, focusing on:
+This skill provides a findings-first review workflow for AS400/RPG applications, focusing on:
 
 - **Variable Initialization** - Prevent random values and data corruption
 - **Variable Naming** - Ensure clarity and maintainability
 - **Common RPG Pitfalls** - Catch frequent bugs before production
 - **AS400-Specific Checks** - Object locks, commitment control, job queues
+- **Release Gate Reviews** - Pre-production blocker assessment for上线场景
+- **Severity Calibration** - Consistent distinction between confirmed defects, open risks, and release blockers
 
 ## Usage
 
-Install via OpenClaw skill management, then use when reviewing AS400/RPG code:
+Use when reviewing AS400/RPG code, local patches, or pre-release IBM i changes:
 
 ```
-/as400-code-review
+$as400-code-review
+```
+
+## Validation
+
+Run the local regression checks before publishing changes:
+
+```bash
+python3 scripts/test_skill.py
+```
+
+Or run the full validation bundle:
+
+```bash
+./scripts/run_checks.sh
 ```
 
 ## Contents
 
 ```
 ├── SKILL.md                           # Main skill file
+├── scripts/
+│   ├── test_skill.py                  # Structural regression checks
+│   └── run_checks.sh                  # Full local validation runner
 └── references/
+    ├── review-playbook.md             # Review mode selection and workflow
+    ├── release-gate.md                # Production readiness gate
+    ├── golden-findings.md             # Example findings and severity calibration
+    ├── golden-cases.md                # Realistic end-to-end review examples
+    ├── anti-patterns.md               # Low-value review behaviors to avoid
+    ├── forward-test-notes.md          # Known review drift patterns
+    ├── report-template.md             # Stable findings-first output format
     ├── rpg-variables.md              # Variable definition reference
     └── rpg-best-practices.md          # RPG best practices guide
 ```
@@ -58,9 +84,14 @@ Install via OpenClaw skill management, then use when reviewing AS400/RPG code:
 - Change log configuration
 - Memory/cursor leaks
 
+### 5. Review Output
+- Findings ordered by severity
+- Separate open risks when context is incomplete
+- Optional release decision for上线/production reviews
+
 ## For OpenClaw Users
 
-This skill is designed for OpenClaw AI assistant. Install using:
+This skill is designed for Codex/OpenClaw-style skill invocation. Install using:
 
 ```bash
 openclaw skills install as400-code-review.skill

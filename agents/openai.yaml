@@ -1,0 +1,4 @@
+interface:
+  display_name: "AS400 Code Review"
+  short_description: "IBM i RPG review for bugs, risk, and release readiness"
+  default_prompt: "Use $as400-code-review to review this IBM i RPG or RPGLE change, list prioritized findings, and state any release blockers or open risks."
