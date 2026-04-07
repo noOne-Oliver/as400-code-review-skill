@@ -56,6 +56,8 @@ def main() -> None:
     anti_patterns = ROOT / "references" / "anti-patterns.md"
     notes = ROOT / "references" / "forward-test-notes.md"
     agents = ROOT / "agents" / "openai.yaml"
+    release_notes = ROOT / "RELEASE_NOTES.md"
+    snapshot_script = ROOT / "scripts" / "test_snapshots.py"
 
     skill_text = read(skill)
     readme_text = read(readme)
@@ -102,7 +104,7 @@ def main() -> None:
     for path in [skill, readme]:
         assert_markdown_links_exist(path)
 
-    for path in [playbook, release_gate, anti_patterns, notes, agents]:
+    for path in [playbook, release_gate, anti_patterns, notes, agents, release_notes, snapshot_script]:
         read(path)
     ok("required reference files exist")
 
@@ -120,7 +122,13 @@ def main() -> None:
     ok("golden findings cover multiple severities")
 
     assert_contains(readme_text, "python3 scripts/test_skill.py", "README testing command")
+    assert_contains(readme_text, "python3 scripts/test_snapshots.py", "README snapshot testing command")
     ok("README includes test command")
+
+    release_notes_text = read(release_notes)
+    assert_contains(release_notes_text, "## v2.0.0", "RELEASE_NOTES.md version section")
+    assert_contains(release_notes_text, "./scripts/run_checks.sh", "RELEASE_NOTES.md validation command")
+    ok("release notes contain expected release metadata")
 
     print("[PASS] skill regression checks passed")
 

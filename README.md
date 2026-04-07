@@ -27,6 +27,7 @@ Run the local regression checks before publishing changes:
 
 ```bash
 python3 scripts/test_skill.py
+python3 scripts/test_snapshots.py
 ```
 
 Or run the full validation bundle:
@@ -35,13 +36,21 @@ Or run the full validation bundle:
 ./scripts/run_checks.sh
 ```
 
+## Release Notes
+
+Current release notes live in [`RELEASE_NOTES.md`](./RELEASE_NOTES.md).
+
 ## Contents
 
 ```
 ├── SKILL.md                           # Main skill file
+├── RELEASE_NOTES.md                   # Current release summary
 ├── scripts/
 │   ├── test_skill.py                  # Structural regression checks
+│   ├── test_snapshots.py              # Snapshot-style output checks
 │   └── run_checks.sh                  # Full local validation runner
+├── tests/
+│   └── snapshots/                     # Example input/output review baselines
 └── references/
     ├── review-playbook.md             # Review mode selection and workflow
     ├── release-gate.md                # Production readiness gate
