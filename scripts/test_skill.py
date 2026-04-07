@@ -53,6 +53,7 @@ def main() -> None:
     golden_cases = ROOT / "references" / "golden-cases.md"
     playbook = ROOT / "references" / "review-playbook.md"
     release_gate = ROOT / "references" / "release-gate.md"
+    fixed_format = ROOT / "references" / "fixed-format-rpgle.md"
     anti_patterns = ROOT / "references" / "anti-patterns.md"
     notes = ROOT / "references" / "forward-test-notes.md"
     agents = ROOT / "agents" / "openai.yaml"
@@ -90,6 +91,7 @@ def main() -> None:
             "## Example 2: CHAIN Without Found Handling",
             "## Example 3: Weak Naming With Real Maintenance Risk",
             "## Example 4: Release Blocker On Commit Path",
+            "## Example 5: Fixed-Format Indicator Leakage",
         ],
     )
     assert_sections(
@@ -99,13 +101,14 @@ def main() -> None:
             "## Case 1: Order Query Program With Missing Found Check",
             "## Case 2: Customer Update Program With Ambiguous Flag And Partial Validation",
             "## Case 3: Settlement Batch Job With Commit Path But No Failure Handling",
+            "## Case 4: Fixed-Format Order Update With Indicator Leakage",
         ],
     )
 
     for path in [skill, readme]:
         assert_markdown_links_exist(path)
 
-    for path in [playbook, release_gate, anti_patterns, notes, agents, release_notes, snapshot_script]:
+    for path in [playbook, release_gate, fixed_format, anti_patterns, notes, agents, release_notes, snapshot_script]:
         read(path)
     ok("required reference files exist")
 
@@ -114,6 +117,7 @@ def main() -> None:
         examples_dir / "pre-release-gate.md",
         examples_dir / "focused-initialization-audit.md",
         examples_dir / "focused-file-and-commit-audit.md",
+        examples_dir / "fixed-format-review.md",
     ]
     for path in example_files:
         text = read(path)
@@ -122,12 +126,12 @@ def main() -> None:
     ok("example prompts exist and reference the skill")
 
     expected_case_sections = len(re.findall(r"## Case \d+:", cases_text))
-    if expected_case_sections != 3:
-        fail(f"Expected 3 golden cases, found {expected_case_sections}")
+    if expected_case_sections != 4:
+        fail(f"Expected 4 golden cases, found {expected_case_sections}")
     for required in ["### Review Input", "### Expected Findings", "### Why This Case Matters"]:
         count = cases_text.count(required)
-        if count != 3:
-            fail(f"Expected '{required}' 3 times in golden-cases.md, found {count}")
+        if count != 4:
+            fail(f"Expected '{required}' 4 times in golden-cases.md, found {count}")
     ok("golden cases structure is complete")
 
     if "critical [" not in findings_text or "medium [" not in findings_text:

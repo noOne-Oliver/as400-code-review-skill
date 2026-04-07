@@ -39,11 +39,17 @@ Examples:
 
 ## Default Review Order
 
-1. Declarations and initialization
-2. File access and status handling
-3. Arithmetic and data conversion risks
-4. Commit, rollback, and locking behavior
-5. Naming and maintainability
+1. Identify source style: fixed-format, free-format, or mixed
+2. Declarations and initialization
+3. File access and status handling
+4. Arithmetic and data conversion risks
+5. Commit, rollback, and locking behavior
+6. Naming and maintainability
+
+## Style-Specific Routing
+
+- If the member is fixed-format or mixed, read `fixed-format-rpgle.md` before finalizing findings.
+- If the member relies on indicators, opcodes, or subroutines for control flow, review those paths before naming or style comments.
 
 ## Evidence Rules
 

@@ -134,3 +134,41 @@ return;
 
 - It calibrates release-gate thinking: commit-related findings can become `critical` when they threaten recovery and data integrity.
 - It also shows that operational correctness matters more than whether the loop style is modern.
+
+## Case 4: Fixed-Format Order Update With Indicator Leakage
+
+### Review Input
+
+```rpgle
+     FORDHDR    IF   E           K DISK
+     D AMT             S              7P 2
+     D ORDNO           S             10A
+     C     *ENTRY        PLIST
+     C                   PARM                    ORDNO
+     C     ORDNO         CHAIN     ORDHDR                     90
+     C     *IN90         IFEQ      *OFF
+     C                   Z-ADD     OHAMT         AMT
+     C                   ENDIF
+     C     AMT           DIV       OHQTY         AVGAMT
+     C                   UPDATE    ORDHDR
+     C                   RETURN
+```
+
+### Expected Findings
+
+- `critical` [ORDUPD.RPGLE:9] `DIV` uses `OHQTY` without a visible zero check before dividing `AMT`.
+  Impact: a zero quantity can trigger arithmetic failure or produce invalid average values in the update path.
+  Fix: guard the divide with an explicit zero check before executing `DIV`.
+
+- `critical` [ORDUPD.RPGLE:10] `UPDATE ORDHDR` executes even when indicator `90` signals that the `CHAIN` did not find a record.
+  Impact: the member can attempt an unsafe update using stale record state or an invalid access path.
+  Fix: move `UPDATE ORDHDR` inside the found-record branch or add an explicit not-found exit path.
+
+- `medium` [ORDUPD.RPGLE:7] Indicator `90` protects `Z-ADD` but does not protect the later arithmetic and update flow.
+  Impact: the member appears partially guarded, which makes the not-found path easy to misread and maintain incorrectly.
+  Fix: keep the full business path, including divide and update, inside the same found-record branch.
+
+### Why This Case Matters
+
+- It exercises fixed-format review instead of free-format review.
+- It forces the reviewer to reason about indicators, opcode semantics, and stale-record risks together.

@@ -29,6 +29,7 @@ def main() -> None:
         ("query_review_input.md", "query_review_expected.md"),
         ("update_review_input.md", "update_review_expected.md"),
         ("release_gate_input.md", "release_gate_expected.md"),
+        ("fixed_format_review_input.md", "fixed_format_review_expected.md"),
     ]
 
     for input_name, expected_name in pairs:

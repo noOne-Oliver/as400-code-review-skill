@@ -10,6 +10,7 @@ This skill provides a findings-first review workflow for AS400/RPG applications,
 - **Variable Naming** - Ensure clarity and maintainability
 - **Common RPG Pitfalls** - Catch frequent bugs before production
 - **AS400-Specific Checks** - Object locks, commitment control, job queues
+- **Fixed-Format RPGLE Review** - Indicator flow, opcode semantics, and column-sensitive risks
 - **Release Gate Reviews** - Pre-production blocker assessment for上线场景
 - **Severity Calibration** - Consistent distinction between confirmed defects, open risks, and release blockers
 
@@ -48,6 +49,7 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - [`pre-release-gate.md`](./examples/pre-release-gate.md)
 - [`focused-initialization-audit.md`](./examples/focused-initialization-audit.md)
 - [`focused-file-and-commit-audit.md`](./examples/focused-file-and-commit-audit.md)
+- [`fixed-format-review.md`](./examples/fixed-format-review.md)
 
 ## Contents
 
@@ -64,6 +66,7 @@ Copy-ready prompts live in [`examples/`](./examples/):
 └── references/
     ├── review-playbook.md             # Review mode selection and workflow
     ├── release-gate.md                # Production readiness gate
+    ├── fixed-format-rpgle.md          # Fixed-format and mixed-source review guidance
     ├── golden-findings.md             # Example findings and severity calibration
     ├── golden-cases.md                # Realistic end-to-end review examples
     ├── anti-patterns.md               # Low-value review behaviors to avoid
@@ -96,14 +99,20 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - MOVE vs EVAL behavior
 - DS size mismatches
 
-### 4. AS400-Specific Checks
+### 4. Fixed-Format RPGLE Risks
+- Indicator leakage outside intended branches
+- `MOVE/MOVEL/Z-ADD/DIV` semantic traps
+- `CHAIN` followed by partial indicator handling
+- Column-sensitive opcode or continuation mistakes
+
+### 5. AS400-Specific Checks
 - Object locks (WRKOBJLCK)
 - Job queue backup
 - COMMIT/ROLLBACK testing
 - Change log configuration
 - Memory/cursor leaks
 
-### 5. Review Output
+### 6. Review Output
 - Findings ordered by severity
 - Separate open risks when context is incomplete
 - Optional release decision for上线/production reviews

@@ -54,3 +54,16 @@ Why this is strong:
 
 - Appropriate for pre-release review.
 - Explains why the issue blocks deployment rather than treating all COMMIT usage as equally risky.
+
+## Example 5: Fixed-Format Indicator Leakage
+
+```text
+critical [ORDUPD.RPGLE:10] `UPDATE ORDHDR` runs outside the `*IN90 = *OFF` found-record branch after `CHAIN`.
+Impact: the member can update with stale record state or on an invalid not-found path.
+Fix: keep the entire update flow inside the found-record branch or exit immediately on indicator 90.
+```
+
+Why this is strong:
+
+- It captures a fixed-format bug that a free-format-only review would often miss.
+- It explains the indicator behavior in business terms rather than only citing legacy syntax.
