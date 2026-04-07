@@ -58,6 +58,7 @@ def main() -> None:
     agents = ROOT / "agents" / "openai.yaml"
     release_notes = ROOT / "RELEASE_NOTES.md"
     snapshot_script = ROOT / "scripts" / "test_snapshots.py"
+    examples_dir = ROOT / "examples"
 
     skill_text = read(skill)
     readme_text = read(readme)
@@ -107,6 +108,18 @@ def main() -> None:
     for path in [playbook, release_gate, anti_patterns, notes, agents, release_notes, snapshot_script]:
         read(path)
     ok("required reference files exist")
+
+    example_files = [
+        examples_dir / "basic-review.md",
+        examples_dir / "pre-release-gate.md",
+        examples_dir / "focused-initialization-audit.md",
+        examples_dir / "focused-file-and-commit-audit.md",
+    ]
+    for path in example_files:
+        text = read(path)
+        assert_contains(text, "Use $as400-code-review", path.name)
+        assert_contains(text, "Code:", path.name)
+    ok("example prompts exist and reference the skill")
 
     expected_case_sections = len(re.findall(r"## Case \d+:", cases_text))
     if expected_case_sections != 3:

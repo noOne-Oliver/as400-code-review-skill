@@ -40,11 +40,21 @@ Or run the full validation bundle:
 
 Current release notes live in [`RELEASE_NOTES.md`](./RELEASE_NOTES.md).
 
+## Example Prompts
+
+Copy-ready prompts live in [`examples/`](./examples/):
+
+- [`basic-review.md`](./examples/basic-review.md)
+- [`pre-release-gate.md`](./examples/pre-release-gate.md)
+- [`focused-initialization-audit.md`](./examples/focused-initialization-audit.md)
+- [`focused-file-and-commit-audit.md`](./examples/focused-file-and-commit-audit.md)
+
 ## Contents
 
 ```
 ├── SKILL.md                           # Main skill file
 ├── RELEASE_NOTES.md                   # Current release summary
+├── examples/                          # Copy-ready review prompt examples
 ├── scripts/
 │   ├── test_skill.py                  # Structural regression checks
 │   ├── test_snapshots.py              # Snapshot-style output checks
