@@ -1,0 +1,50 @@
+{
+  "cases": [
+    {
+      "input": "query_review_input.md",
+      "expected": "query_review_expected.md",
+      "input_tokens": ["ORDHDR", "CHAIN", "wsAmt"],
+      "expected_tokens": ["%FOUND(ORDHDR)", "wsAmt", "unsafe file-status handling"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "update_review_input.md",
+      "expected": "update_review_expected.md",
+      "input_tokens": ["FLAG1", "inLevel", "update CUSHDRR"],
+      "expected_tokens": ["FLAG1", "inLevel", "missing update-path validation"],
+      "findings": 2,
+      "severity_counts": {"critical": 0, "medium": 2, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "release_gate_input.md",
+      "expected": "release_gate_expected.md",
+      "input_tokens": ["commit", "update SETLHDRR", "wsCnt"],
+      "expected_tokens": ["`blocked`", "rollback", "update SETLHDRR"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": true,
+      "release_gate_value": "`blocked`"
+    },
+    {
+      "input": "fixed_format_review_input.md",
+      "expected": "fixed_format_review_expected.md",
+      "input_tokens": ["*IN90", "DIV", "UPDATE    ORDHDR"],
+      "expected_tokens": ["*IN90", "UPDATE ORDHDR", "fixed-format indicator leakage"],
+      "findings": 3,
+      "severity_counts": {"critical": 2, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "mixed_source_review_input.md",
+      "expected": "mixed_source_review_expected.md",
+      "input_tokens": ["CHAIN", "/FREE", "OHSTAT"],
+      "expected_tokens": ["*IN90", "fixed/free boundary", "unsafe behavior crossing the fixed/free boundary"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    }
+  ]
+}

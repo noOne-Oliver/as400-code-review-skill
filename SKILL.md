@@ -26,18 +26,19 @@ If the user does not specify a mode, default to `code-review`.
 
 ## Required Workflow
 
-Follow this order:
+Follow this route instead of loading every reference by default:
 
 1. Identify the review scope: files, member type, and requested focus.
 2. Identify source style: fixed-format, free-format, or mixed.
-3. Read [references/review-playbook.md](./references/review-playbook.md) to select the review path.
-4. Read [references/rpg-variables.md](./references/rpg-variables.md) when declarations, initialization, DS layout, or naming are relevant.
-5. Read [references/rpg-best-practices.md](./references/rpg-best-practices.md) when file I/O, commit control, arithmetic, or error handling are relevant.
-6. Read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md) when the code is fixed-format or mixes fixed and free syntax.
-7. Read [references/release-gate.md](./references/release-gate.md) when the task involves deployment,上线, or production readiness.
-8. Read [references/golden-findings.md](./references/golden-findings.md) to calibrate severity and wording when writing findings.
-9. Read [references/golden-cases.md](./references/golden-cases.md) when you want realistic review examples or need help choosing between possible finding severities.
-10. Produce findings first. Keep summaries secondary.
+3. Read [references/review-playbook.md](./references/review-playbook.md) first.
+4. Route by task:
+   - `code-review` + free-format: read [references/rpg-best-practices.md](./references/rpg-best-practices.md) and [references/report-template.md](./references/report-template.md)
+   - `code-review` + fixed-format: read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md) and [references/report-template.md](./references/report-template.md)
+   - `code-review` + mixed: read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md), [references/mixed-source-review.md](./references/mixed-source-review.md), and [references/report-template.md](./references/report-template.md)
+   - `focused-audit`: add only the domain reference you need, such as [references/rpg-variables.md](./references/rpg-variables.md) for initialization or [references/rpg-best-practices.md](./references/rpg-best-practices.md) for file and transaction review
+   - `pre-release-gate`: also read [references/release-gate.md](./references/release-gate.md)
+5. Only if severity or wording is still ambiguous, read [references/golden-findings.md](./references/golden-findings.md) or [references/golden-cases.md](./references/golden-cases.md).
+6. Produce findings first. Keep summaries secondary.
 
 Do not produce a generic “looks good” checklist when concrete findings can be made.
 
@@ -47,6 +48,7 @@ Do not produce a generic “looks good” checklist when concrete findings can b
 - Prefer evidence from the code over generic RPG advice.
 - Treat missing `%FOUND`, `%EOF`, `%ERROR`, divide-by-zero guards, lock handling, and commit/rollback verification as higher priority than naming style.
 - For fixed-format members, treat indicator leakage, opcode semantics, and found/not-found branch scope as first-class correctness risks.
+- For mixed-source members, treat the fixed/free boundary itself as a risk surface and verify that protections carry across it explicitly.
 - Separate verified issues from potential risks when surrounding context is incomplete.
 - If file definitions or field semantics are unavailable, say validation is partial rather than guessing.
 - Treat release-readiness items as blockers only when the task is a pre-release or production gate review.
@@ -121,6 +123,7 @@ Use these tie-breakers:
 - Read [references/rpg-variables.md](./references/rpg-variables.md) for declaration and initialization issues.
 - Read [references/rpg-best-practices.md](./references/rpg-best-practices.md) for control-flow, file, and transaction issues.
 - Read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md) for fixed-format and mixed-source review.
+- Read [references/mixed-source-review.md](./references/mixed-source-review.md) when fixed and free logic coexist in one member.
 - Read [references/release-gate.md](./references/release-gate.md) for上线 or production-gate reviews.
 - Read [references/golden-findings.md](./references/golden-findings.md) to calibrate finding quality.
 - Read [references/golden-cases.md](./references/golden-cases.md) for realistic end-to-end review examples.

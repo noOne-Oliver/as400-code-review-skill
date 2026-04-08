@@ -67,3 +67,16 @@ Why this is strong:
 
 - It captures a fixed-format bug that a free-format-only review would often miss.
 - It explains the indicator behavior in business terms rather than only citing legacy syntax.
+
+## Example 6: Mixed-Source Guard Lost At Style Boundary
+
+```text
+critical [ORDMIX.RPGLE:8] Free-format logic reads `OHSTAT` after a fixed-format `CHAIN` without carrying the `*IN90` not-found guard across the style boundary.
+Impact: the member can read stale or invalid record data when the order is not found.
+Fix: keep the free-format branch inside an explicit found-record guard or exit immediately on `*IN90`.
+```
+
+Why this is strong:
+
+- It catches a defect that exists at the seam between styles, not inside either style alone.
+- It focuses on behavior leakage across the transition rather than generic modernization commentary.

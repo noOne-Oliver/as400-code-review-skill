@@ -172,3 +172,39 @@ return;
 
 - It exercises fixed-format review instead of free-format review.
 - It forces the reviewer to reason about indicators, opcode semantics, and stale-record risks together.
+
+## Case 5: Mixed-Source Member With Lost Not-Found Guard
+
+### Review Input
+
+```rpgle
+     FORDHDR    IF   E           K DISK
+     D ORDNO           S             10A
+     D WSSTAT          S              1A
+     C     *ENTRY        PLIST
+     C                   PARM                    ORDNO
+     C     ORDNO         CHAIN     ORDHDR                     90
+ /FREE
+   if OHSTAT = 'A';
+     WSSTAT = 'A';
+   else;
+     WSSTAT = 'H';
+   endif;
+   return;
+ /END-FREE
+```
+
+### Expected Findings
+
+- `critical` [ORDMIX.RPGLE:8] Free-format logic reads `OHSTAT` after a fixed-format `CHAIN` without carrying the `*IN90` not-found guard across the style boundary.
+  Impact: the member can read stale or invalid record data when `ORDHDR` is not found.
+  Fix: keep the free-format branch inside an explicit found-record guard or exit immediately on `*IN90`.
+
+- `medium` [ORDMIX.RPGLE:7] The fixed/free transition does not make ownership of record-validity state explicit.
+  Impact: later maintenance can misread the free-format block as safe even though it depends on fixed-format indicator state.
+  Fix: make the found/not-found branch explicit at the transition point and document the boundary in code structure.
+
+### Why This Case Matters
+
+- It exercises the seam between fixed-format and free-format logic.
+- It prevents the skill from treating mixed-source review as only a subset of fixed-format review.

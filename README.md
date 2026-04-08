@@ -22,6 +22,8 @@ Use when reviewing AS400/RPG code, local patches, or pre-release IBM i changes:
 $as400-code-review
 ```
 
+Install or reference this skill as a local repository in the skills location used by your Codex/OpenClaw environment. This repository does not currently publish a packaged `.skill` artifact.
+
 ## Validation
 
 Run the local regression checks before publishing changes:
@@ -50,6 +52,7 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - [`focused-initialization-audit.md`](./examples/focused-initialization-audit.md)
 - [`focused-file-and-commit-audit.md`](./examples/focused-file-and-commit-audit.md)
 - [`fixed-format-review.md`](./examples/fixed-format-review.md)
+- [`mixed-source-review.md`](./examples/mixed-source-review.md)
 
 ## Contents
 
@@ -63,10 +66,13 @@ Copy-ready prompts live in [`examples/`](./examples/):
 │   └── run_checks.sh                  # Full local validation runner
 ├── tests/
 │   └── snapshots/                     # Example input/output review baselines
+├── vendor/                            # Vendored validation tooling
+├── .github/workflows/                 # CI automation
 └── references/
     ├── review-playbook.md             # Review mode selection and workflow
     ├── release-gate.md                # Production readiness gate
     ├── fixed-format-rpgle.md          # Fixed-format and mixed-source review guidance
+    ├── mixed-source-review.md         # Mixed fixed/free review guidance
     ├── golden-findings.md             # Example findings and severity calibration
     ├── golden-cases.md                # Realistic end-to-end review examples
     ├── anti-patterns.md               # Low-value review behaviors to avoid
@@ -105,25 +111,26 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - `CHAIN` followed by partial indicator handling
 - Column-sensitive opcode or continuation mistakes
 
-### 5. AS400-Specific Checks
+### 5. Mixed-Source Risks
+- Fixed-format guards that do not carry into `/FREE` logic
+- Indicator state assumed inside free-format without an explicit boundary
+- Shared variables interpreted differently across style transitions
+
+### 6. AS400-Specific Checks
 - Object locks (WRKOBJLCK)
 - Job queue backup
 - COMMIT/ROLLBACK testing
 - Change log configuration
 - Memory/cursor leaks
 
-### 6. Review Output
+### 7. Review Output
 - Findings ordered by severity
 - Separate open risks when context is incomplete
 - Optional release decision for上线/production reviews
 
 ## For OpenClaw Users
 
-This skill is designed for Codex/OpenClaw-style skill invocation. Install using:
-
-```bash
-openclaw skills install as400-code-review.skill
-```
+Use this repository as a local skill source in your OpenClaw/Codex environment. If your host expects packaged skills, add a packaging step outside this repository rather than relying on a non-existent `.skill` file.
 
 ## License
 
