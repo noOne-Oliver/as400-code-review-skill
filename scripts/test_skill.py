@@ -54,6 +54,7 @@ def main() -> None:
     playbook = ROOT / "references" / "review-playbook.md"
     release_gate = ROOT / "references" / "release-gate.md"
     fixed_format = ROOT / "references" / "fixed-format-rpgle.md"
+    card_domain = ROOT / "references" / "card-domain-review.md"
     anti_patterns = ROOT / "references" / "anti-patterns.md"
     notes = ROOT / "references" / "forward-test-notes.md"
     agents = ROOT / "agents" / "openai.yaml"
@@ -97,6 +98,15 @@ def main() -> None:
             "## Example 4: Release Blocker On Commit Path",
             "## Example 5: Fixed-Format Indicator Leakage",
             "## Example 6: Mixed-Source Guard Lost At Style Boundary",
+            "## Example 7: Card Authorization Double Release Risk",
+            "## Example 8: Repayment Allocation Order Missing",
+            "## Example 9: Credit Limit Invariant Risk",
+            "## Example 10: Minimum Payment Formula Missing Required Buckets",
+            "## Example 11: Delinquency Status Cleared Too Early",
+            "## Example 12: Installment Closure Without Final Reconciliation",
+            "## Example 13: Points Accrued Before Eligible Posting State",
+            "## Example 14: Refund Path Does Not Symmetrically Reverse Points",
+            "## Example 15: Points Expiry Batch Expires The Wrong Buckets",
         ],
     )
     assert_sections(
@@ -108,6 +118,15 @@ def main() -> None:
             "## Case 3: Settlement Batch Job With Commit Path But No Failure Handling",
             "## Case 4: Fixed-Format Order Update With Indicator Leakage",
             "## Case 5: Mixed-Source Member With Lost Not-Found Guard",
+            "## Case 6: Card Authorization Reversal Without Idempotency",
+            "## Case 7: Card Repayment Applied Directly To Principal",
+            "## Case 8: Card Limit Batch Without Post-Update Invariant Checks",
+            "## Case 9: Statement Minimum Payment Computed From Principal Only",
+            "## Case 10: Delinquency Status Cleared On Any Positive Payment",
+            "## Case 11: Installment Plan Closed Without Residual Reconciliation",
+            "## Case 12: Points Granted Before Posting Finality",
+            "## Case 13: Refund Reverses Points Without Earned-Points Reconciliation",
+            "## Case 14: Points Expiry Batch Expires Total Balance Instead Of Eligible Bucket",
         ],
     )
 
@@ -118,6 +137,7 @@ def main() -> None:
         playbook,
         release_gate,
         fixed_format,
+        card_domain,
         mixed_source,
         anti_patterns,
         notes,
@@ -138,6 +158,7 @@ def main() -> None:
         examples_dir / "focused-file-and-commit-audit.md",
         examples_dir / "fixed-format-review.md",
         examples_dir / "mixed-source-review.md",
+        examples_dir / "card-domain-review.md",
     ]
     for path in example_files:
         text = read(path)
@@ -146,12 +167,12 @@ def main() -> None:
     ok("example prompts exist and reference the skill")
 
     expected_case_sections = len(re.findall(r"## Case \d+:", cases_text))
-    if expected_case_sections != 5:
-        fail(f"Expected 5 golden cases, found {expected_case_sections}")
+    if expected_case_sections != 14:
+        fail(f"Expected 14 golden cases, found {expected_case_sections}")
     for required in ["### Review Input", "### Expected Findings", "### Why This Case Matters"]:
         count = cases_text.count(required)
-        if count != 5:
-            fail(f"Expected '{required}' 5 times in golden-cases.md, found {count}")
+        if count != 14:
+            fail(f"Expected '{required}' 14 times in golden-cases.md, found {count}")
     ok("golden cases structure is complete")
 
     if "critical [" not in findings_text or "medium [" not in findings_text:
@@ -184,6 +205,8 @@ def main() -> None:
         fail("SKILL.md should mention mixed-source review")
     if "mixed-source" not in readme_text.lower():
         fail("README.md should mention mixed-source review")
+    if "card domain" not in readme_text.lower():
+        fail("README.md should mention card-domain review coverage")
     if "release readiness" not in agents_text.lower():
         fail("agents/openai.yaml should mention release readiness in its interface text")
     if "fixed-format" not in release_notes_text.lower():

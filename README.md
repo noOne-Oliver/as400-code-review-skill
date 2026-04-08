@@ -11,6 +11,7 @@ This skill provides a findings-first review workflow for AS400/RPG applications,
 - **Common RPG Pitfalls** - Catch frequent bugs before production
 - **AS400-Specific Checks** - Object locks, commitment control, job queues
 - **Fixed-Format RPGLE Review** - Indicator flow, opcode semantics, and column-sensitive risks
+- **Card Domain Review** - Authorization, reversal, repayment allocation, statement logic, delinquency movement, loyalty points, and limit integrity
 - **Release Gate Reviews** - Pre-production blocker assessment for上线场景
 - **Severity Calibration** - Consistent distinction between confirmed defects, open risks, and release blockers
 
@@ -53,6 +54,7 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - [`focused-file-and-commit-audit.md`](./examples/focused-file-and-commit-audit.md)
 - [`fixed-format-review.md`](./examples/fixed-format-review.md)
 - [`mixed-source-review.md`](./examples/mixed-source-review.md)
+- [`card-domain-review.md`](./examples/card-domain-review.md)
 
 ## Contents
 
@@ -73,6 +75,7 @@ Copy-ready prompts live in [`examples/`](./examples/):
     ├── release-gate.md                # Production readiness gate
     ├── fixed-format-rpgle.md          # Fixed-format and mixed-source review guidance
     ├── mixed-source-review.md         # Mixed fixed/free review guidance
+    ├── card-domain-review.md          # Credit-card domain review guidance
     ├── golden-findings.md             # Example findings and severity calibration
     ├── golden-cases.md                # Realistic end-to-end review examples
     ├── anti-patterns.md               # Low-value review behaviors to avoid
@@ -116,14 +119,23 @@ Copy-ready prompts live in [`examples/`](./examples/):
 - Indicator state assumed inside free-format without an explicit boundary
 - Shared variables interpreted differently across style transitions
 
-### 6. AS400-Specific Checks
+### 6. Card Domain Risks
+- Authorization reversal or release that is not idempotent
+- Repayment allocation that ignores fee / interest / principal order
+- Limit changes that violate available-credit or product-cap invariants
+- Billing logic that uses undocumented status or amount semantics
+- Minimum-payment logic that omits required debt buckets
+- Delinquency or installment status changes that do not reconcile with remaining balances
+- Loyalty-point accrual, reversal, or expiry logic that ignores lifecycle or bucket rules
+
+### 7. AS400-Specific Checks
 - Object locks (WRKOBJLCK)
 - Job queue backup
 - COMMIT/ROLLBACK testing
 - Change log configuration
 - Memory/cursor leaks
 
-### 7. Review Output
+### 8. Review Output
 - Findings ordered by severity
 - Separate open risks when context is incomplete
 - Optional release decision for上线/production reviews

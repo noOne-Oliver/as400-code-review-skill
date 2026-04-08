@@ -35,7 +35,7 @@ Follow this route instead of loading every reference by default:
    - `code-review` + free-format: read [references/rpg-best-practices.md](./references/rpg-best-practices.md) and [references/report-template.md](./references/report-template.md)
    - `code-review` + fixed-format: read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md) and [references/report-template.md](./references/report-template.md)
    - `code-review` + mixed: read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md), [references/mixed-source-review.md](./references/mixed-source-review.md), and [references/report-template.md](./references/report-template.md)
-   - `focused-audit`: add only the domain reference you need, such as [references/rpg-variables.md](./references/rpg-variables.md) for initialization or [references/rpg-best-practices.md](./references/rpg-best-practices.md) for file and transaction review
+   - `focused-audit`: add only the domain reference you need, such as [references/rpg-variables.md](./references/rpg-variables.md) for initialization, [references/rpg-best-practices.md](./references/rpg-best-practices.md) for file and transaction review, or [references/card-domain-review.md](./references/card-domain-review.md) for card business logic
    - `pre-release-gate`: also read [references/release-gate.md](./references/release-gate.md)
 5. Only if severity or wording is still ambiguous, read [references/golden-findings.md](./references/golden-findings.md) or [references/golden-cases.md](./references/golden-cases.md).
 6. Produce findings first. Keep summaries secondary.
@@ -49,6 +49,7 @@ Do not produce a generic “looks good” checklist when concrete findings can b
 - Treat missing `%FOUND`, `%EOF`, `%ERROR`, divide-by-zero guards, lock handling, and commit/rollback verification as higher priority than naming style.
 - For fixed-format members, treat indicator leakage, opcode semantics, and found/not-found branch scope as first-class correctness risks.
 - For mixed-source members, treat the fixed/free boundary itself as a risk surface and verify that protections carry across it explicitly.
+- For card-domain members, treat balance movement, allocation order, statement/minimum-due formulas, delinquency aging, limit invariants, installment closure, loyalty-point lifecycle rules, and reversal idempotency as first-class correctness risks.
 - Separate verified issues from potential risks when surrounding context is incomplete.
 - If file definitions or field semantics are unavailable, say validation is partial rather than guessing.
 - Treat release-readiness items as blockers only when the task is a pre-release or production gate review.
@@ -67,6 +68,10 @@ Escalate these quickly:
 - DS layout or field-width mismatch
 - arithmetic that can overflow or divide by zero
 - misleading variable names that are likely to cause incorrect maintenance changes
+- card balance or limit updates that can overstate available credit, understate outstanding debt, or break business allocation rules
+- statement or minimum-due calculations that silently omit required debt buckets
+- delinquency or installment status transitions that can desynchronize business status from financial balances
+- loyalty-point accrual, reversal, or expiry logic that can double-credit, miss reversal, or expire the wrong bucket
 
 ## Output Contract
 
@@ -124,6 +129,7 @@ Use these tie-breakers:
 - Read [references/rpg-best-practices.md](./references/rpg-best-practices.md) for control-flow, file, and transaction issues.
 - Read [references/fixed-format-rpgle.md](./references/fixed-format-rpgle.md) for fixed-format and mixed-source review.
 - Read [references/mixed-source-review.md](./references/mixed-source-review.md) when fixed and free logic coexist in one member.
+- Read [references/card-domain-review.md](./references/card-domain-review.md) for card authorization, reversal, repayment, statement, and limit logic.
 - Read [references/release-gate.md](./references/release-gate.md) for上线 or production-gate reviews.
 - Read [references/golden-findings.md](./references/golden-findings.md) to calibrate finding quality.
 - Read [references/golden-cases.md](./references/golden-cases.md) for realistic end-to-end review examples.

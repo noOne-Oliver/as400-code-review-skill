@@ -45,6 +45,87 @@
       "findings": 2,
       "severity_counts": {"critical": 1, "medium": 1, "info": 0},
       "release_gate_required": false
+    },
+    {
+      "input": "card_auth_review_input.md",
+      "expected": "card_auth_review_expected.md",
+      "input_tokens": ["AUTHHDR", "AHHOLD", "AHSTAT"],
+      "expected_tokens": ["double-release", "idempotent", "authorization"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_repayment_review_input.md",
+      "expected": "card_repayment_review_expected.md",
+      "input_tokens": ["CARDACCT", "ACPRIN", "inPayAmt"],
+      "expected_tokens": ["allocation", "principal", "outstanding balances"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_limit_review_input.md",
+      "expected": "card_limit_review_expected.md",
+      "input_tokens": ["CARDLIM", "CLAVL", "CLLMT"],
+      "expected_tokens": ["available-credit", "product cap", "wsUpdCnt"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_statement_review_input.md",
+      "expected": "card_statement_review_expected.md",
+      "input_tokens": ["STMTCTL", "MNPMT", "STPRIN"],
+      "expected_tokens": ["minimum payment", "fee", "interest"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_delinquency_review_input.md",
+      "expected": "card_delinquency_review_expected.md",
+      "input_tokens": ["CARDDLY", "DQSTAT", "inPayAmt"],
+      "expected_tokens": ["delinquency", "overdue", "collections"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_installment_review_input.md",
+      "expected": "card_installment_review_expected.md",
+      "input_tokens": ["INSTPLAN", "INREMN", "INSTAT"],
+      "expected_tokens": ["installment", "residual", "ledger"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_points_accrual_review_input.md",
+      "expected": "card_points_accrual_review_expected.md",
+      "input_tokens": ["PNTLED", "PAVAIL", "inTxnAmt"],
+      "expected_tokens": ["points", "posting", "idempotency"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_points_refund_review_input.md",
+      "expected": "card_points_refund_review_expected.md",
+      "input_tokens": ["PNTACCT", "PAVAIL", "inRefundAmt"],
+      "expected_tokens": ["refund", "negative", "original"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
+    },
+    {
+      "input": "card_points_expiry_review_input.md",
+      "expected": "card_points_expiry_review_expected.md",
+      "input_tokens": ["PNTEXP", "PTOTAL", "PXDATE"],
+      "expected_tokens": ["expire", "bucket", "protected"],
+      "findings": 2,
+      "severity_counts": {"critical": 1, "medium": 1, "info": 0},
+      "release_gate_required": false
     }
   ]
 }
